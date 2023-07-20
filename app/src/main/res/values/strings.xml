@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PersonalDiaryApp</string>
+    <string name="auth_subtitle">Please Sign In to Continue</string>
+    <string name="auth_title">Welcome Back!</string>
+</resources>

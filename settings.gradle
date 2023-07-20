@@ -1,0 +1,18 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // to run two library from stevdza-san that we put on our app build.gradle
+        maven { url 'https://jitpack.io' }
+    }
+}
+rootProject.name = "PersonalDiaryApp"
+include ':app'

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Splash Screen style for light  mode -->
+    <style name="Theme.PersonalDiaryApp.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFFFFBFF</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_diaryapp</item>
+        <!-- after the Splash Screen, our app theme will return to Theme.PersonalDiaryApp theme -->
+        <item name="postSplashScreenTheme">@style/Theme.PersonalDiaryApp</item>
+    </style>
+</resources>
