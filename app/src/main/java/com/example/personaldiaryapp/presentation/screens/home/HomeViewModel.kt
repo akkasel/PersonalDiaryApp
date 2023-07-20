@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.personaldiaryapp.data.repository.Diaries
 import com.example.personaldiaryapp.data.repository.MongoDB
-import com.example.personaldiaryapp.util.RequestState
-import kotlinx.coroutines.flow.collect
+import com.example.personaldiaryapp.model.RequestState
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel() {

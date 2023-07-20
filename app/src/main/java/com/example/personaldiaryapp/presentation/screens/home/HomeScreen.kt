@@ -1,8 +1,6 @@
 package com.example.personaldiaryapp.presentation.screens.home
 
 import android.annotation.SuppressLint
-import android.app.DownloadManager.Request
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -20,10 +18,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.example.personaldiaryapp.R
 import com.example.personaldiaryapp.data.repository.Diaries
-import com.example.personaldiaryapp.util.RequestState
+import com.example.personaldiaryapp.model.RequestState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)

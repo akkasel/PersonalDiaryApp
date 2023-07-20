@@ -1,12 +1,9 @@
 package com.example.personaldiaryapp.navigation
 
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -15,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.personaldiaryapp.data.repository.MongoDB
+import com.example.personaldiaryapp.model.GalleryImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.example.personaldiaryapp.model.Mood
@@ -27,7 +25,8 @@ import com.example.personaldiaryapp.presentation.screens.write.WriteScreen
 import com.example.personaldiaryapp.presentation.screens.write.WriteViewModel
 import com.example.personaldiaryapp.util.Constants.APP_ID
 import com.example.personaldiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.example.personaldiaryapp.util.RequestState
+import com.example.personaldiaryapp.model.RequestState
+import com.example.personaldiaryapp.model.rememberGalleryState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
@@ -200,14 +199,14 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit){
         val uiState = viewModel.uiState
         val context = LocalContext.current
         val pagerState = rememberPagerState()
-        val pageNumber by remember{
-            derivedStateOf { pagerState.currentPage }
-        }
+        val galleryState = rememberGalleryState()
+        val pageNumber by remember{ derivedStateOf { pagerState.currentPage } }
 
         WriteScreen(
             uiState = uiState,
             moodName = { Mood.values()[pageNumber].name },
             pagerState = pagerState,
+            galleryState = galleryState,
             onTitleChanged = {viewModel.setTitle(title = it)},
             onDescriptionChanged = {viewModel.setDescription(description = it)},
             onDeleteConfirmed = {
@@ -241,6 +240,14 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit){
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+                )
+            },
+            onImageSelect = {
+                galleryState.addImage(
+                    GalleryImage(
+                        image = it,
+                        remoteImagePath = ""
+                    )
                 )
             }
         )

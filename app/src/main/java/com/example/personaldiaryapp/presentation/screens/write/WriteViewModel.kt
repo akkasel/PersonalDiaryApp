@@ -6,12 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.personaldiaryapp.data.repository.MongoDB
 import com.example.personaldiaryapp.model.Diary
 import com.example.personaldiaryapp.model.Mood
 import com.example.personaldiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.example.personaldiaryapp.util.RequestState
+import com.example.personaldiaryapp.model.RequestState
 import com.example.personaldiaryapp.util.toRealmInstant
 import io.realm.kotlin.types.ObjectId
 import io.realm.kotlin.types.RealmInstant
