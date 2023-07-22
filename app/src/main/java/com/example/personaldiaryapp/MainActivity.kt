@@ -14,12 +14,14 @@ import com.example.personaldiaryapp.ui.theme.PersonalDiaryAppTheme
 import com.example.personaldiaryapp.util.Constants.APP_ID
 import com.example.personaldiaryapp.util.retryUploadingImageToFirebase
 import com.google.firebase.FirebaseApp
+import dagger.hilt.android.AndroidEntryPoint
 import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject

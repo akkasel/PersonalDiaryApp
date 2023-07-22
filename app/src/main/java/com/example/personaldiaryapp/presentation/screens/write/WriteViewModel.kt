@@ -30,9 +30,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.ZonedDateTime
+import javax.inject.Inject
 
 @HiltViewModel
-class WriteViewModel(
+class WriteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val imageToUploadDao: ImageToUploadDao
 ): ViewModel() {
