@@ -101,7 +101,7 @@ fun NavGraphBuilder.authenticationRoute(
                 oneTapState.open()
                 viewModel.setLoading(true)
             },
-            onTokenIdReceived = { tokenId ->
+            onSuccessfulFirebaseSignIn = { tokenId ->
                 viewModel.signInWithMongoAtlas(
                     tokenId = tokenId,
                     onSuccess = {
@@ -113,6 +113,10 @@ fun NavGraphBuilder.authenticationRoute(
                         viewModel.setLoading(false)
                     }
                 )
+            },
+            onFailedFirebaseSignIn = {
+                messageBarState.addError(it)
+                viewModel.setLoading(false)
             },
             onDialogDismissed = { message ->
                 messageBarState.addError(Exception(message))
@@ -198,8 +202,8 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit){
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
         val context = LocalContext.current
+        val galleryState = viewModel.galleryState
         val pagerState = rememberPagerState()
-        val galleryState = rememberGalleryState()
         val pageNumber by remember{ derivedStateOf { pagerState.currentPage } }
 
         WriteScreen(
@@ -243,12 +247,8 @@ fun NavGraphBuilder.writeRoute(onBackPressed: () -> Unit){
                 )
             },
             onImageSelect = {
-                galleryState.addImage(
-                    GalleryImage(
-                        image = it,
-                        remoteImagePath = ""
-                    )
-                )
+                val type = context.contentResolver.getType(it)?.split("/")?.last() ?: "jpg"
+                viewModel.addImage(image = it, imageType = type)
             }
         )
     }

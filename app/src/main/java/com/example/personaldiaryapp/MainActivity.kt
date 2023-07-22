@@ -18,6 +18,9 @@ import com.example.personaldiaryapp.navigation.Screen
 import com.example.personaldiaryapp.navigation.SetupNavGraph
 import com.example.personaldiaryapp.ui.theme.PersonalDiaryAppTheme
 import com.example.personaldiaryapp.util.Constants.APP_ID
+import com.google.firebase.FirebaseApp
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
 import io.realm.kotlin.mongodb.App
 
 class MainActivity : ComponentActivity() {
@@ -26,16 +29,17 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         // show splash screen
         installSplashScreen().setKeepOnScreenCondition(){
             keepSplashOpened
         }
 
+        FirebaseApp.initializeApp(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        // MongoDB.configureTheRealm()
 
         setContent {
-            PersonalDiaryAppTheme {
+            PersonalDiaryAppTheme(dynamicColor = false) {
                 val navController = rememberNavController()
                 SetupNavGraph(
                     startDestination = getStartDestination(),

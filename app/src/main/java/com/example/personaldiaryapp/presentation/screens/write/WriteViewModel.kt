@@ -1,5 +1,6 @@
 package com.example.personaldiaryapp.presentation.screens.write
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,10 +9,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.personaldiaryapp.data.repository.MongoDB
 import com.example.personaldiaryapp.model.Diary
+import com.example.personaldiaryapp.model.GalleryImage
+import com.example.personaldiaryapp.model.GalleryState
 import com.example.personaldiaryapp.model.Mood
 import com.example.personaldiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.example.personaldiaryapp.model.RequestState
+import com.example.personaldiaryapp.model.rememberGalleryState
 import com.example.personaldiaryapp.util.toRealmInstant
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import io.realm.kotlin.types.ObjectId
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +30,7 @@ class WriteViewModel(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
+    val galleryState = GalleryState()
     var uiState by mutableStateOf(UiState())
     private set
 
@@ -106,6 +113,7 @@ class WriteViewModel(
             }
         })
         if(result is RequestState.Success){
+            uploadImagesToFirebase()
             withContext(Dispatchers.Main){
                 onSuccess()
             }
@@ -130,6 +138,7 @@ class WriteViewModel(
             }
         })
         if(result is RequestState.Success){
+            uploadImagesToFirebase()
             withContext(Dispatchers.Main){
                 onSuccess()
             }
@@ -157,6 +166,25 @@ class WriteViewModel(
                     }
                 }
             }
+        }
+    }
+
+    fun addImage(image: Uri, imageType: String){
+        val remoteImagePath = "images/${FirebaseAuth.getInstance().currentUser?.uid}/" +
+                "${image.lastPathSegment}${System.currentTimeMillis()},$imageType"
+        galleryState.addImage(
+            GalleryImage(
+                image = image,
+                remoteImagePath = remoteImagePath
+            )
+        )
+    }
+
+    private fun uploadImagesToFirebase(){
+        val storage = FirebaseStorage.getInstance().reference
+        galleryState.images.forEach{ galleryImage ->
+            val imagePath = storage.child(galleryImage.remoteImagePath)
+            imagePath.putFile(galleryImage.image)
         }
     }
 
