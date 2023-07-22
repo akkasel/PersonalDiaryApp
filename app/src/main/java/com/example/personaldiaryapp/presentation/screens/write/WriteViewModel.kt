@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.personaldiaryapp.data.database.entity.ImageToUpload
+import com.example.personaldiaryapp.data.database.entity.ImageToUploadDao
 import com.example.personaldiaryapp.data.repository.MongoDB
 import com.example.personaldiaryapp.model.Diary
 import com.example.personaldiaryapp.model.GalleryImage
@@ -14,10 +16,13 @@ import com.example.personaldiaryapp.model.GalleryState
 import com.example.personaldiaryapp.model.Mood
 import com.example.personaldiaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.example.personaldiaryapp.model.RequestState
-import com.example.personaldiaryapp.model.rememberGalleryState
+import com.example.personaldiaryapp.util.fetchImagesFromFirebase
 import com.example.personaldiaryapp.util.toRealmInstant
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.types.ObjectId
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
@@ -26,8 +31,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.ZonedDateTime
 
+@HiltViewModel
 class WriteViewModel(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val imageToUploadDao: ImageToUploadDao
 ): ViewModel() {
 
     val galleryState = GalleryState()
@@ -60,6 +67,20 @@ class WriteViewModel(
                             setTitle(title = diary.data.title)
                             setDescription(description = diary.data.description)
                             setMood(mood = Mood.valueOf(diary.data.mood))
+
+                            fetchImagesFromFirebase(
+                                remoteImagePath = diary.data.images,
+                                onImageDownload = { downloadImage ->
+                                    galleryState.addImage(
+                                        GalleryImage(
+                                            image = downloadImage,
+                                            remoteImagePath = extractImagePath(
+                                                fullImageUrl = downloadImage.toString()
+                                            ),
+                                        )
+                                    )
+                                }
+                            )
                         }
                     }
 
@@ -185,7 +206,27 @@ class WriteViewModel(
         galleryState.images.forEach{ galleryImage ->
             val imagePath = storage.child(galleryImage.remoteImagePath)
             imagePath.putFile(galleryImage.image)
+                .addOnProgressListener {
+                    val sessionUri = it.uploadSessionUri
+                    if(sessionUri != null){
+                        viewModelScope.launch(Dispatchers.IO) {
+                            imageToUploadDao.addImageToUpload(
+                                ImageToUpload(
+                                    remoteImagePath = galleryImage.remoteImagePath,
+                                    imageUri = galleryImage.image.toString(),
+                                    sessionUri = sessionUri.toString()
+                                )
+                            )
+                        }
+                    }
+                }
         }
+    }
+
+    private fun extractImagePath(fullImageUrl: String): String {
+        val chunks = fullImageUrl.split("%2F")
+        val imageName = chunks[2].split("?").first()
+        return "images/${Firebase.auth.currentUser?.uid}/$imageName"
     }
 
 }
