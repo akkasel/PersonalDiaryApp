@@ -2,6 +2,7 @@ package com.example.personaldiaryapp.util
 
 import android.net.Uri
 import androidx.core.net.toUri
+import com.example.personaldiaryapp.data.database.entity.ImageToDelete
 import com.example.personaldiaryapp.data.database.entity.ImageToUpload
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storageMetadata
@@ -54,6 +55,15 @@ fun retryUploadingImageToFirebase(
         storageMetadata { },
         imageToUpload.sessionUri.toUri()
     ).addOnSuccessListener { onSuccess() }
+}
+
+fun retryDeletingImageToFirebase(
+    imageToDelete: ImageToDelete,
+    onSuccess: () -> Unit
+) {
+    val storage = FirebaseStorage.getInstance().reference
+    storage.child(imageToDelete.remoteImagePath).delete()
+        .addOnSuccessListener { onSuccess() }
 }
 
 fun Instant.toRealmInstant(): RealmInstant{

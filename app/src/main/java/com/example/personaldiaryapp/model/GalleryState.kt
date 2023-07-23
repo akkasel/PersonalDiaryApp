@@ -22,10 +22,6 @@ class GalleryState {
         images.remove(galleryImage)
         imagesToBeDeleted.add(galleryImage)
     }
-
-    fun clearImagesToBeDeleted(){
-        imagesToBeDeleted.clear()
-    }
 }
 
 data class GalleryImage(
