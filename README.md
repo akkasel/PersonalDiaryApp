@@ -19,5 +19,5 @@ Multi-Module : branch -> multi-module
 - Firebase for storing images
 
 
-# Screenshot<br>
+# Screenshots<br>
 ![Alt Text](screenshots/group.png)
