@@ -4,7 +4,7 @@ Diary / Journaling Android App
 Single-Module : branch -> master
 Multi-Module : branch -> multi-module
 
-Features :
+# Features :
 1. Google Authentication
 2. Create Diary
 3. Change Diary
@@ -13,7 +13,7 @@ Features :
 6. Filter Diaries
 7. Delete All Diaries
 
-Stack :
+# Stack :
 - Jetpack Compose ( Kotlin )
 - MongoDB for User's data
 - Firebase for storing images
