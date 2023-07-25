@@ -18,5 +18,6 @@ Stack :
 - MongoDB for User's data
 - Firebase for storing images
 
-  Screenshots :
-  ![Alt Text]()
+
+Screenshots :
+![Alt Text](screenshots/Group 1.png)
