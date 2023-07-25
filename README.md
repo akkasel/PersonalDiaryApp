@@ -19,5 +19,5 @@ Stack :
 - Firebase for storing images
 
 
-Screenshots :
-![Alt Text](screenshots/Group 1.png)
+# Screenshot<br>
+![Alt Text](screenshot/group.png)
