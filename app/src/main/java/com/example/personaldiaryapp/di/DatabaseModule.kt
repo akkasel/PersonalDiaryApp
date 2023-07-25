@@ -2,9 +2,9 @@ package com.example.personaldiaryapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.personaldiaryapp.connectivity.NetworkConnectivityObserver
-import com.example.personaldiaryapp.data.database.ImagesDatabase
-import com.example.personaldiaryapp.util.Constants.IMAGES_DATABASE
+import com.akka.mongo.database.ImagesDatabase
+import com.akka.util.connectivity.NetworkConnectivityObserver
+import com.akka.util.Constants.IMAGES_DATABASE
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
