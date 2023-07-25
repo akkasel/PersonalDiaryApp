@@ -20,4 +20,4 @@ Stack :
 
 
 # Screenshot<br>
-![Alt Text](screenshot/group.png)
+![Alt Text](screenshots/group.png)
