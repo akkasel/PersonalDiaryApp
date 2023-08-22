@@ -1,7 +1,7 @@
 # PersonalDiaryApp
 Created by : Raymond Akkasel - 2023   
   
-Multi-Module Android Journaling App created with Kotlin, Jetpack Compose, MongoDB, and Firebase
+Multi-Module Android Journaling App created with Kotlin, Jetpack Compose, MongoDB, and Firebase  
 Diary / Journaling Android App  
 Single-Module : branch -> master  
 Multi-Module : branch -> multi-module
